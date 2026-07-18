@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>CivicPulse Login</title>
+
+<style>
+
+body{
+
+background:linear-gradient(to right,#0d6efd,#00b4db);
+
+font-family:Arial;
+
+}
+
+.login{
+
+width:350px;
+
+margin:100px auto;
+
+background:white;
+
+padding:30px;
+
+border-radius:10px;
+
+box-shadow:0 0 15px black;
+
+}
+
+h2{
+
+text-align:center;
+
+color:#0d6efd;
+
+}
+
+input{
+
+width:100%;
+
+padding:10px;
+
+margin:10px 0;
+
+}
+
+button{
+
+width:100%;
+
+padding:12px;
+
+background:#0d6efd;
+
+color:white;
+
+border:none;
+
+font-size:18px;
+
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#084298;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login">
+
+<h2>CivicPulse Login</h2>
+
+<form action="/login" method="post">
+
+<input type="email" name="email" placeholder="Enter Email" required>
+
+<input type="password" name="password" placeholder="Enter Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
