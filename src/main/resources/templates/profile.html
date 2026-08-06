@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>My Profile</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f2f2f2;
+}
+
+.container{
+    width:500px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+
+h2{
+    text-align:center;
+    color:#0066cc;
+}
+
+.profile-item{
+    margin:20px 0;
+    font-size:20px;
+}
+
+label{
+    font-weight:bold;
+    color:#333;
+}
+
+.value{
+    color:#0066cc;
+}
+
+.back-btn{
+    display:block;
+    width:180px;
+    margin:30px auto 0;
+    padding:12px;
+    text-align:center;
+    background:#0066cc;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#004999;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>👤 My Profile</h2>
+
+<div class="profile-item">
+<label>Name:</label>
+<span class="value" th:text="${user.name}"></span>
+</div>
+
+<div class="profile-item">
+<label>Email:</label>
+<span class="value" th:text="${user.email}"></span>
+</div>
+
+<div class="profile-item">
+<label>Phone:</label>
+<span class="value" th:text="${user.phone}"></span>
+</div>
+
+<a href="/dashboard" class="back-btn">⬅ Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
