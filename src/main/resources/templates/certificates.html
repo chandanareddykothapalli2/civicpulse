@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Certificate Applications</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f2f6fb;
+    margin:0;
+}
+
+.container{
+    width:95%;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 10px #bbb;
+}
+
+h2{
+    text-align:center;
+    color:#0066cc;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#0066cc;
+    color:white;
+    padding:12px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+.verify{
+    background:#ff9800;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.approve{
+    background:#198754;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.pending{
+    color:#ff9800;
+    font-weight:bold;
+}
+
+.verified{
+    color:#198754;
+    font-weight:bold;
+}
+
+.approved{
+    color:#198754;
+    font-weight:bold;
+}
+
+.back{
+    display:inline-block;
+    margin-top:20px;
+    background:#0066cc;
+    color:white;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📜 Certificate Applications</h2>
+
+<table>
+
+<tr>
+
+<th>Application ID</th>
+<th>Applicant Name</th>
+<th>Certificate Type</th>
+<th>Department</th>
+<th>Status</th>
+<th>Verification</th>
+<th>Issue Date</th>
+<th>Action</th>
+
+</tr>
+
+<tr th:each="certificate : ${certificates}">
+
+<td th:text="${certificate.applicationId}">
+</td>
+
+<td th:text="${certificate.applicantName}">
+</td>
+
+<td th:text="${certificate.certificateType}">
+</td>
+
+<td th:text="${certificate.department}">
+</td>
+
+<td>
+
+<span th:if="${certificate.status == 'Pending'}"
+      class="pending">
+
+    Pending
+
+</span>
+
+<span th:if="${certificate.status == 'Approved'}"
+      class="approved">
+
+    Approved
+
+</span>
+
+</td>
+
+<td>
+
+    <!-- Pending certificate -->
+    <span th:if="${certificate.status == 'Pending'}">
+
+        <!-- Not Verified -->
+        <form th:if="${certificate.verificationStatus != 'Verified'}"
+              action="/verifyCertificate"
+              method="post"
+              style="display:inline;">
+
+            <input type="hidden"
+                   name="id"
+                   th:value="${certificate.id}">
+
+            <button type="submit"
+                    class="verify">
+                Verify
+            </button>
+
+        </form>
+
+        <!-- Verified but not Approved -->
+        <form th:if="${certificate.verificationStatus == 'Verified'}"
+              action="/approveCertificate"
+              method="post"
+              style="display:inline;">
+
+            <input type="hidden"
+                   name="id"
+                   th:value="${certificate.id}">
+
+            <button type="submit"
+                    class="approve">
+                Approve
+            </button>
+
+        </form>
+
+    </span>
+
+
+    <!-- Approved certificate -->
+    <span th:if="${certificate.status == 'Approved'}">
+
+        <span style="color:green;font-weight:bold;">
+            ✅ Completed
+        </span>
+
+        <br>
+
+        <a th:href="@{/downloadCertificate(id=${certificate.id})}"
+           class="download"
+           style="
+               display:inline-block;
+               margin-top:8px;
+               padding:8px 12px;
+               background:#0066cc;
+               color:white;
+               text-decoration:none;
+               border-radius:5px;
+           ">
+            📥 Download Certificate
+        </a>
+
+    </span>
+
+</td>
+<td th:text="${certificate.issueDate}">
+</td>
+
+<td>
+
+<span th:if="${certificate.status == 'Pending' 
+              and certificate.verificationStatus == 'Verified'}">
+
+    <form action="/approveCertificate" method="post">
+
+        <input type="hidden"
+               name="id"
+               th:value="${certificate.id}">
+
+        <button type="submit"
+                class="approve">
+
+            Approve
+
+        </button>
+
+    </form>
+
+</span>
+
+<span th:if="${certificate.status == 'Approved'}"
+      class="approved">
+
+    ✅ Completed
+
+</span>
+
+</td>
+
+</tr>
+
+<tr th:if="${#lists.isEmpty(certificates)}">
+
+<td colspan="8"
+    style="color:red;font-weight:bold;">
+
+    No certificate applications found.
+
+</td>
+
+</tr>
+
+</table>
+
+<a href="/dashboard" class="back">
+    ⬅ Back to Dashboard
+</a>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Apply for Certificate</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f6fb;
+    margin:0;
+}
+
+.container{
+    width:500px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 0 12px #bbb;
+}
+
+h2{
+    text-align:center;
+    color:#0066cc;
+    margin-bottom:30px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+}
+
+input, select{
+    width:100%;
+    padding:11px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:25px;
+    background:#0066cc;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0052a3;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#0066cc;
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📜 Apply for Certificate</h2>
+
+<form action="/certificate" method="post">
+
+    <label>Applicant Name</label>
+
+    <input type="text"
+           name="applicantName"
+           placeholder="Enter applicant name"
+           required>
+
+
+    <label>Certificate Type</label>
+
+    <select name="certificateType" required>
+
+        <option value="">-- Select Certificate --</option>
+
+        <option value="Birth Certificate">
+            Birth Certificate
+        </option>
+
+        <option value="Death Certificate">
+            Death Certificate
+        </option>
+
+        <option value="Income Certificate">
+            Income Certificate
+        </option>
+
+        <option value="Residence Certificate">
+            Residence Certificate
+        </option>
+
+    </select>
+
+
+    <label>Department</label>
+
+    <select name="department" required>
+
+        <option value="">-- Select Department --</option>
+
+        <option value="Revenue Department">
+            Revenue Department
+        </option>
+
+        <option value="Municipal Department">
+            Municipal Department
+        </option>
+
+        <option value="Health Department">
+            Health Department
+        </option>
+
+    </select>
+
+
+    <button type="submit">
+        Submit Application
+    </button>
+
+</form>
+
+<a href="/dashboard" class="back">
+    ⬅ Back to Dashboard
+</a>
+
+</div>
+
+</body>
+
+</html>
