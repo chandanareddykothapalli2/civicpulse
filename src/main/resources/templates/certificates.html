@@ -3,270 +3,362 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>Certificate Applications</title>
+    <title>Certificate Applications</title>
 
-<style>
+    <style>
 
-body{
-    font-family:Arial, sans-serif;
-    background:#f2f6fb;
-    margin:0;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-.container{
-    width:95%;
-    margin:30px auto;
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 0 10px #bbb;
-}
+        body {
+            background: #eef2f7;
+        }
 
-h2{
-    text-align:center;
-    color:#0066cc;
-    margin-bottom:25px;
-}
+        .container {
+            width: 96%;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+        h2 {
+            text-align: center;
+            color: #0066cc;
+            margin-bottom: 30px;
+            font-size: 26px;
+        }
 
-th{
-    background:#0066cc;
-    color:white;
-    padding:12px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-td{
-    border:1px solid #ddd;
-    padding:10px;
-    text-align:center;
-}
+        th {
+            background: #0066cc;
+            color: white;
+            padding: 14px;
+            text-align: center;
+        }
 
-.verify{
-    background:#ff9800;
-    color:white;
-    border:none;
-    padding:8px 12px;
-    border-radius:5px;
-    cursor:pointer;
-}
+        td {
+            padding: 14px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
 
-.approve{
-    background:#198754;
-    color:white;
-    border:none;
-    padding:8px 12px;
-    border-radius:5px;
-    cursor:pointer;
-}
+        tr:hover {
+            background: #f5f9ff;
+        }
 
-.pending{
-    color:#ff9800;
-    font-weight:bold;
-}
+        /* Pending */
 
-.verified{
-    color:#198754;
-    font-weight:bold;
-}
+        .pending {
+            color: #ff9800;
+            font-weight: bold;
+        }
 
-.approved{
-    color:#198754;
-    font-weight:bold;
-}
+        /* Verified */
 
-.back{
-    display:inline-block;
-    margin-top:20px;
-    background:#0066cc;
-    color:white;
-    text-decoration:none;
-    padding:10px 18px;
-    border-radius:5px;
-}
+        .verified {
+            color: #008f4c;
+            font-weight: bold;
+        }
 
-</style>
+        /* Approved */
+
+        .approved {
+            color: #008f4c;
+            font-weight: bold;
+        }
+
+        /* Download button */
+
+        .download {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 9px 14px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .download:hover {
+            background: #004999;
+        }
+
+        /* Back button */
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 11px 18px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back:hover {
+            background: #004999;
+        }
+
+        /* No applications */
+
+        .no-data {
+            color: red;
+            font-weight: bold;
+            padding: 20px;
+        }
+
+        @media(max-width: 900px) {
+
+            .container {
+                width: 98%;
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 900px;
+            }
+
+        }
+
+    </style>
 
 </head>
+
 
 <body>
 
 <div class="container">
 
-<h2>📜 Certificate Applications</h2>
-
-<table>
-
-<tr>
-
-<th>Application ID</th>
-<th>Applicant Name</th>
-<th>Certificate Type</th>
-<th>Department</th>
-<th>Status</th>
-<th>Verification</th>
-<th>Issue Date</th>
-<th>Action</th>
-
-</tr>
-
-<tr th:each="certificate : ${certificates}">
-
-<td th:text="${certificate.applicationId}">
-</td>
-
-<td th:text="${certificate.applicantName}">
-</td>
-
-<td th:text="${certificate.certificateType}">
-</td>
-
-<td th:text="${certificate.department}">
-</td>
-
-<td>
-
-<span th:if="${certificate.status == 'Pending'}"
-      class="pending">
-
-    Pending
-
-</span>
-
-<span th:if="${certificate.status == 'Approved'}"
-      class="approved">
-
-    Approved
-
-</span>
-
-</td>
-
-<td>
-
-    <!-- Pending certificate -->
-    <span th:if="${certificate.status == 'Pending'}">
-
-        <!-- Not Verified -->
-        <form th:if="${certificate.verificationStatus != 'Verified'}"
-              action="/verifyCertificate"
-              method="post"
-              style="display:inline;">
-
-            <input type="hidden"
-                   name="id"
-                   th:value="${certificate.id}">
-
-            <button type="submit"
-                    class="verify">
-                Verify
-            </button>
-
-        </form>
-
-        <!-- Verified but not Approved -->
-        <form th:if="${certificate.verificationStatus == 'Verified'}"
-              action="/approveCertificate"
-              method="post"
-              style="display:inline;">
-
-            <input type="hidden"
-                   name="id"
-                   th:value="${certificate.id}">
-
-            <button type="submit"
-                    class="approve">
-                Approve
-            </button>
-
-        </form>
-
-    </span>
+    <h2>📜 Certificate Applications</h2>
 
 
-    <!-- Approved certificate -->
-    <span th:if="${certificate.status == 'Approved'}">
+    <table>
 
-        <span style="color:green;font-weight:bold;">
-            ✅ Completed
-        </span>
+        <thead>
 
-        <br>
+            <tr>
 
-        <a th:href="@{/downloadCertificate(id=${certificate.id})}"
-           class="download"
-           style="
-               display:inline-block;
-               margin-top:8px;
-               padding:8px 12px;
-               background:#0066cc;
-               color:white;
-               text-decoration:none;
-               border-radius:5px;
-           ">
-            📥 Download Certificate
-        </a>
+                <th>Application ID</th>
 
-    </span>
+                <th>Applicant Name</th>
 
-</td>
-<td th:text="${certificate.issueDate}">
-</td>
+                <th>Certificate Type</th>
 
-<td>
+                <th>Department</th>
 
-<span th:if="${certificate.status == 'Pending' 
-              and certificate.verificationStatus == 'Verified'}">
+                <th>Status</th>
 
-    <form action="/approveCertificate" method="post">
+                <th>Verification</th>
 
-        <input type="hidden"
-               name="id"
-               th:value="${certificate.id}">
+                <th>Issue Date</th>
 
-        <button type="submit"
-                class="approve">
+                <th>Action</th>
 
-            Approve
+            </tr>
 
-        </button>
+        </thead>
 
-    </form>
 
-</span>
+        <tbody>
 
-<span th:if="${certificate.status == 'Approved'}"
-      class="approved">
+            <!-- Certificate records -->
 
-    ✅ Completed
+            <tr th:each="certificate : ${certificates}">
 
-</span>
+                <!-- Application ID -->
 
-</td>
+                <td th:text="${certificate.applicationId}">
+                    CERT1001
+                </td>
 
-</tr>
 
-<tr th:if="${#lists.isEmpty(certificates)}">
+                <!-- Applicant Name -->
 
-<td colspan="8"
-    style="color:red;font-weight:bold;">
+                <td th:text="${certificate.applicantName}">
+                    Chandana
+                </td>
 
-    No certificate applications found.
 
-</td>
+                <!-- Certificate Type -->
 
-</tr>
+                <td th:text="${certificate.certificateType}">
+                    Income Certificate
+                </td>
 
-</table>
 
-<a href="/dashboard" class="back">
-    ⬅ Back to Dashboard
-</a>
+                <!-- Department -->
+
+                <td th:text="${certificate.department}">
+                    Revenue Department
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                    <!-- Pending -->
+
+                    <span th:if="${certificate.status == 'Pending'}"
+                          class="pending">
+
+                        ⏳ Pending
+
+                    </span>
+
+
+                    <!-- Approved -->
+
+                    <span th:if="${certificate.status == 'Approved'}"
+                          class="approved">
+
+                        ✅ Approved
+
+                    </span>
+
+                </td>
+
+
+                <!-- VERIFICATION -->
+
+                <td>
+
+                    <!-- Not Verified -->
+
+                    <span th:if="${certificate.verificationStatus != 'Verified'}"
+                          class="pending">
+
+                        ⏳ Verification Pending
+
+                    </span>
+
+
+                    <!-- Verified -->
+
+                    <span th:if="${certificate.verificationStatus == 'Verified'}"
+                          class="verified">
+
+                        ✅ Verified
+
+                    </span>
+
+                </td>
+
+
+                <!-- ISSUE DATE -->
+
+                <td>
+
+                    <span th:if="${certificate.issueDate != null}"
+                          th:text="${certificate.issueDate}">
+
+                        09-08-2026
+
+                    </span>
+
+
+                    <span th:if="${certificate.issueDate == null}"
+                          style="color:gray;">
+
+                        Not Issued
+
+                    </span>
+
+                </td>
+
+
+                <!-- ACTION -->
+
+                <td>
+
+                    <!-- Pending + Not Verified -->
+
+                    <span th:if="${certificate.status == 'Pending' 
+                                   and certificate.verificationStatus != 'Verified'}"
+                          class="pending">
+
+                        ⏳ Waiting for Verification
+
+                    </span>
+
+
+                    <!-- Pending + Verified -->
+
+                    <span th:if="${certificate.status == 'Pending' 
+                                   and certificate.verificationStatus == 'Verified'}"
+                          class="verified">
+
+                        ✅ Verified - Approval Pending
+
+                    </span>
+
+
+                    <!-- Approved -->
+
+                    <span th:if="${certificate.status == 'Approved'}">
+
+                        <span class="approved">
+
+                            ✅ Completed
+
+                        </span>
+
+                        <br>
+
+
+                        <a th:href="@{/downloadCertificate(id=${certificate.id})}"
+                           class="download">
+
+                            📥 Download Certificate
+
+                        </a>
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+
+            <!-- No certificates -->
+
+            <tr th:if="${#lists.isEmpty(certificates)}">
+
+                <td colspan="8"
+                    class="no-data">
+
+                    No certificate applications found.
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <!-- Back to Dashboard -->
+
+    <a href="/dashboard"
+       class="back">
+
+        ← Back to Dashboard
+
+    </a>
 
 </div>
 
